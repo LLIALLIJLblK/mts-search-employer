@@ -1,0 +1,63 @@
+
+
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      my-network:
+        ipv4_address: 172.16.238.10
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend/devops/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+    networks:
+      my-network:
+        ipv4_address: 172.16.238.11
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./backend/devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      my-network:
+        ipv4_address: 172.16.238.12
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend/devops/grafana/provisioning:/etc/grafana/provisioning
+    env_file:
+      - ./backend/devops/grafana/config.monitoring
+    networks:
+      my-network:
+        ipv4_address: 172.16.238.13
+
+networks:
+  my-network:
+    name: my-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
