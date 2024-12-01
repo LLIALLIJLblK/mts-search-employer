@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../assets/SearchEmployPage.css';
 
 const SearchEmployPage = () => {
@@ -19,6 +20,25 @@ const SearchEmployPage = () => {
   });
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState('');
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost/filters/users/search');
+      setUsers(response.data);
+      setFilteredUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -29,13 +49,41 @@ const SearchEmployPage = () => {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+    filterUsers(e.target.value, selectedGender);
+  };
+
+  const handleGenderChange = (e) => {
+    setSelectedGender(e.target.value);
+    filterUsers(searchQuery, e.target.value);
+  };
+
+  const filterUsers = (query, gender) => {
+    const filtered = users.filter(user => {
+      const fullName = `${user.last_name} ${user.first_name} ${user.father_name}`.toLowerCase();
+      const genderMatch = gender ? user.sex === gender : true;
+      return fullName.includes(query.toLowerCase()) && genderMatch;
+    });
+    setFilteredUsers(filtered);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Здесь вы можете добавить логику для обработки данных формы
     console.log('Form data submitted:', formData);
-    console.log('Search query:', searchQuery);
+    setAppliedFilters(`Воронеж 18-30`); // Пример примененных фильтров
+  };
+
+  const handleUserClick = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost/filters/users/${userId}`);
+      setSelectedUser(response.data);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedUser(null);
   };
 
   return (
@@ -88,8 +136,8 @@ const SearchEmployPage = () => {
           </div>
           <div className="form-group">
             <label htmlFor="gender">Пол</label>
-            <select id="gender" name="gender" value={formData.gender} onChange={handleChange}>
-              <option value="">Выберите из списка</option>
+            <select id="gender" name="gender" value={selectedGender} onChange={handleGenderChange}>
+              <option value="">Выберите пол</option>
               <option value="male">Мужской</option>
               <option value="female">Женский</option>
             </select>
@@ -140,9 +188,31 @@ const SearchEmployPage = () => {
         </div>
         <div className="employee-list">
           <h2>Список сотрудников</h2>
-          {/* Здесь будет список сотрудников */}
+          {appliedFilters && <p>Примененные фильтры: {appliedFilters}</p>}
+          {filteredUsers.map(user => (
+            <div key={user.id} className="employee-card" onClick={() => handleUserClick(user.id)}>
+              <h3>{user.last_name} {user.first_name} {user.father_name}</h3>
+              <p>{user.about_user || 'Информация отсутствует'}</p>
+            </div>
+          ))}
         </div>
       </div>
+      {selectedUser && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h2>{selectedUser.user.last_name} {selectedUser.user.first_name} {selectedUser.user.father_name}</h2>
+            <p><strong>Email:</strong> {selectedUser.user.email}</p>
+            <p><strong>Телефон:</strong> {selectedUser.user.phone_number || 'Не указан'}</p>
+            <p><strong>Пол:</strong> {selectedUser.user.sex || 'Не указан'}</p>
+            <p><strong>Дата рождения:</strong> {selectedUser.user.birthday || 'Не указана'}</p>
+            <p><strong>Дата начала работы:</strong> {selectedUser.user.date_of_start_work || 'Не указана'}</p>
+            <p><strong>О себе:</strong> {selectedUser.user.about_user || 'Не указано'}</p>
+            <p><strong>Департамент:</strong> {selectedUser.departament.title}</p>
+            <p><strong>Команда:</strong> {selectedUser.team ? selectedUser.team.title : 'Не указана'}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

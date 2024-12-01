@@ -7,7 +7,7 @@ const HeroSection = () => {
     <div className="hero-container">
       <div className="hero-section">
         <div className="hero-content">
-          <h1>Встречайте “Структурум”</h1>
+          <h1>Встречайте Структурум</h1>
           <p>Веб-сервис визуализации организационной структуры для клиентов МТС Линк</p>
           <a href="#use" className="cta-button">Подробнее</a>
         </div>

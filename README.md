@@ -45,3 +45,13 @@
    cd mts-search-employer
    npm install
    ```
+3. **Запуск приложения:**
+   ```bash
+      npm run dev
+   ```
+
+4. **Установка бекенда**
+```bash
+   cd ChalengeHackBackend
+   docker-compose up -d
+   ```
