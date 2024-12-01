@@ -1,0 +1,30 @@
+.about-section {
+  padding: 2rem;
+
+  background-color: white;
+  color: #000;
+  margin-top: 100px;
+
+}
+
+.wpar_text{
+  margin-left: 5%;
+  right: 30%;
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  color: #000;
+  font-family: 'MTS Sans', sans-serif;
+}
+
+
+.about-section h2 {
+  font-size: 36px;
+  margin-bottom: 1rem;
+}
+
+.about-section p {
+  width: 1000px;
+  font-size: 32px;
+}

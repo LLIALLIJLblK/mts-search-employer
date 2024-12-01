@@ -1,0 +1,50 @@
+footer{
+  margin: 0 auto;
+  display: flex;
+}
+
+.info-section {
+  padding: 2rem;
+  font-family: 'MTS Sans', sans-serif;
+  background: #F2F3F7;
+  color: #000 ;
+}
+.info-footer{
+  padding: 40px;
+  color: #000 ;
+}
+
+
+.info-footer p{
+  width: 800px;
+  margin-left: 60px;
+  font-size: 24px;
+}
+.info-footer h2{
+  margin-top: 10px;
+  margin-left: 60px;
+  font-size: 32px;
+}
+
+.info-section h2 {
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.info-section p {
+  font-size: 24px;
+}
+
+.chill_people{
+  color: #000 ;
+
+  margin-top: 20px;
+  margin-bottom: 1rem;
+  padding: 40px;
+}
+
+.chill_people p {
+  
+  width: 300px;
+  font-size: 18px;
+}

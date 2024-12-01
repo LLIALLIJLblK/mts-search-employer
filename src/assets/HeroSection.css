@@ -1,0 +1,71 @@
+
+
+.hero-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px; /* Отступ от навбара */
+}
+
+.hero-section {
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 1200px;
+  height: 560px;
+  background: rgb(234,51,61);
+  background: linear-gradient(70deg, rgba(234,51,61,1) 0%, rgba(0,0,0,1) 100%);/* Красноватый градиент */
+  border-radius: 25px;
+  display: flex;
+
+  color: white; /* Цвет текста */
+  font-family: 'MTS Sans', sans-serif;
+}
+
+.hero-content {
+  margin: 90px;
+
+}
+.hero-content a{
+  position: absolute;
+  top: 68%;
+  
+}
+
+.hero-content h1 {
+
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+
+  font-size: 24px;
+  width: 550px;
+  margin-bottom: 40px;
+}
+
+.cta-button {
+  text-align: center;
+  background-color: white; /* Белый фон для кнопки */
+  color: #000; /* Красный цвет текста на кнопке */
+  width: 180px;
+  padding: 15px 30px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+
+.cta-button:hover {
+  text-decoration: none;
+  color: #EA333D; /* Белый текст при наведении */
+}
+
+.round-tube {
+  position: absolute;
+  left: 55%; /* Настройте положение по горизонтали */
+  height: auto; /* Сохраните пропорции */
+  width: 35%; /* Задайте ширину контейнера */
+}
